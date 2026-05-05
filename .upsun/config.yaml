@@ -159,6 +159,15 @@ applications:
                 # Block hidden files
                 '/\.':
                     allow: false
+        "/app/plugins/civicrm/civicrm":
+          root: "web/app/plugins/civicrm/civicrm"
+          scripts: false
+          allow: false
+          rules:
+            # Allow only safe static assets
+            '\.(jpe?g|gif|png|svg|bmp|ico|css|js|json|eot|ttf|woff|woff2|pdf|docx?|xlsx?|pp[st]x?|psd|odt|key|mp[2-5g]|m4[av]|og[gv]|wav|mov|wm[av]|avi|3g[p2])$':
+              allow: true
+              expires: 1w
         "/app/plugins/civicrm/civicrm/packages/kcfinder":
             root: "web/app/plugins/civicrm/civicrm/packages/kcfinder"
             allow: true
