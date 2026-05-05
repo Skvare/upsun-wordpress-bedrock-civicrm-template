@@ -128,7 +128,7 @@ applications:
                 # Block hidden files
                 '/\.':
                     allow: false
-        "/wp-content/plugins/civicrm/civicrm/packages/kcfinder":
+        "/app/plugins/civicrm/civicrm/packages/kcfinder":
             root: "web/app/plugins/civicrm/civicrm/packages/kcfinder"
             allow: true
             scripts: true
