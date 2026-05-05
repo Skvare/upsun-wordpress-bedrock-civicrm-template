@@ -64,7 +64,9 @@
     "oomphinc/composer-installers-extender": "^2.0",
     "symfony/dotenv": "^7.4",
     "platformsh/config-reader": "^3.0",
-    "skvare/wordpress-bedrock-civicrm-settings": "dev-master"
+    "skvare/wordpress-bedrock-civicrm-settings": "dev-master",
+    "civicrm/cli-tools": "^2026.03",
+    "wp-cli/wp-cli-bundle": "^2.11"
   },
   "require-dev": {
     "roave/security-advisories": "dev-latest",
