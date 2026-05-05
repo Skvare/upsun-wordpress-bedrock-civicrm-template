@@ -92,6 +92,37 @@ applications:
               allow: false
             ^/readme\.html$:
               allow: false
+        "/wp/wp-includes":
+          root: "web/wp/wp-includes"
+          scripts: false
+          allow: false
+          rules:
+            # Allow static assets
+            '\.(jpe?g|gif|png|svg|bmp|ico|css|js|json|eot|ttf|woff|woff2|pdf|docx?|xlsx?|pp[st]x?|psd|odt|key|mp[2-5g]|m4[av]|og[gv]|wav|mov|wm[av]|avi|3g[p2])$':
+              allow: true
+              expires: 1w
+            # Block PHP execution
+            '\.(?i:php|phtml|php3|php4|php5|php7|php8|phar|pl|cgi|asp|aspx|jsp|cfm|shtml|shtm|htaccess|sh|bash|exe|dll)$':
+              allow: false
+            # Block hidden files
+            '/\.':
+              allow: false
+
+        "/wp/wp-admin":
+          scripts: true
+          allow: true
+          passthru: "/wp/index.php"
+          index:
+            - "index.php"
+          rules:
+            # Allow static assets
+            '\.(jpe?g|gif|png|svg|bmp|ico|css|js|json|eot|ttf|woff|woff2|pdf|docx?|xlsx?|pp[st]x?|psd|odt|key|mp[2-5g]|m4[av]|og[gv]|wav|mov|wm[av]|avi|3g[p2])$':
+              allow: true
+              expires: 1w
+            # Block hidden files
+            '/\.':
+              allow: false
+
         "/wp/wp-content/cache":
           root: "web/wp/wp-content/cache"
           scripts: false
