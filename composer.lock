@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bd28ca0d9e21d5c758be6d55c13b2937",
+    "content-hash": "fff5d390b52a50945476908623211be1",
     "packages": [
         {
             "name": "adrienrn/php-mimetyper",
@@ -5630,12 +5630,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:Skvare/wordpress-bedrock-civicrm-settings.git",
-                "reference": "6413ef0e2287b202328d489c33c07a58ffdb5909"
+                "reference": "2acd840e0e4fb18c5d6e60d30c0add7e8cb55c2b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Skvare/wordpress-bedrock-civicrm-settings/zipball/6413ef0e2287b202328d489c33c07a58ffdb5909",
-                "reference": "6413ef0e2287b202328d489c33c07a58ffdb5909",
+                "url": "https://api.github.com/repos/Skvare/wordpress-bedrock-civicrm-settings/zipball/2acd840e0e4fb18c5d6e60d30c0add7e8cb55c2b",
+                "reference": "2acd840e0e4fb18c5d6e60d30c0add7e8cb55c2b",
                 "shasum": ""
             },
             "require": {
@@ -5652,7 +5652,7 @@
                 "source": "https://github.com/Skvare/wordpress-bedrock-civicrm-settings/tree/master",
                 "issues": "https://github.com/Skvare/wordpress-bedrock-civicrm-settings/issues"
             },
-            "time": "2026-05-05T18:30:19+00:00"
+            "time": "2026-05-05T18:51:24+00:00"
         },
         {
             "name": "soundasleep/html2text",
