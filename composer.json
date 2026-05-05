@@ -110,7 +110,7 @@
       "url": "/app/plugins/civicrm/civicrm"
     },
     "civicrm": {
-      "cms_type": "WordPress",
+      "cms_type": "wordpress",
       "extensions_install_path": "./web/app/civicrm-ext/contrib",
       "extensions": {
         "uk.co.vedaconsulting.mosaico": {
