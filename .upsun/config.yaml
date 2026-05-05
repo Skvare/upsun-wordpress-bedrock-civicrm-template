@@ -1,0 +1,198 @@
+# This file describes an application. You can have multiple applications
+# in the same project.
+#
+# See https://docs.platform.sh/configuration/app.html
+
+# The name of this app. Must be unique within a project.
+applications: 
+  wordpress:
+    type: 'php:8.3'
+    dependencies:
+      php:
+        composer/composer: '^2.1'
+    runtime:
+      extensions:
+        - opcache
+        - redis
+        - sodium
+        - apcu
+        - blackfire
+        - imagick
+        - mbstring
+    variables:
+      env:
+        CIVICRM_CRED_KEYS: ''
+        CIVICRM_SIGN_KEYS: ''
+        CIVICRM_SITE_KEY: ''
+        CIVICRM_DEPLOY_ID: ''
+
+# The relationships of the application with services or other applications.
+#
+# The left-hand side is the name of the relationship as it will be exposed
+# to the application in the PLATFORM_RELATIONSHIPS variable. The right-hand
+# side is in the form `<service name>:<endpoint name>`.
+    relationships:
+        database: 'db:mysql'
+
+# The size of the persistent disk of the application (in MB).
+
+# The 'mounts' describe writable, persistent filesystem mounts in the application.
+    mounts:
+        '/web/app/uploads':
+            source: storage
+            source_path: 'uploads'
+        '/web/app/wp-content/cache':
+            source: storage
+            source_path: 'cache'
+        '/tmp':
+            source: tmp
+            source_path: 'tmp'
+
+# Configuration of the build of this application.
+    build:
+        flavor: composer
+    # The hooks executed at various points in the lifecycle of the application.
+    hooks:
+        # The build hook runs after Composer to finish preparing up your code.
+        # No services are available but the disk is writeable.
+        build: |
+            set -e
+            echo "Installing Upsun CLI"
+            curl -fsSL https://raw.githubusercontent.com/platformsh/cli/main/installer.sh | VENDOR=upsun bash
+
+        #Move s3Backup to a script
+        deploy: |
+            set -e
+            sleep 45 || sleep 60 || sleep 90
+            # Skip loading CiviCRM for WP-CLI commands via wp-config.php (filter added there).
+            # No need to rename/move files (filesystem is read-only).
+            # Flush the object cache (to avoid stale data between releases)
+            wp cache flush
+            
+            # Run any required WordPress database migrations
+            wp core update-db
+
+    # The configuration of app when it is exposed to the web.
+    web:
+      locations:
+
+        "/":
+          root: "web"
+          passthru: "/wp/index.php"
+          index:
+            - "index.php"
+          expires: 300s
+          scripts: true
+          allow: true
+          rules:
+            '\.': { allow: false }
+            ^/composer\.json:
+              allow: false
+            ^/license\.txt$:
+              allow: false
+            ^/readme\.html$:
+              allow: false
+        "/wp/wp-content/cache":
+          root: "web/wp/wp-content/cache"
+          scripts: false
+          allow: false
+        "/wp/wp-content/uploads":
+          root: "web/app/uploads"
+          scripts: false
+          allow: false
+          rules:
+            # Allow only safe static assets
+            '\.(jpe?g|gif|png|svg|bmp|ico|css|js|json|eot|ttf|woff|woff2|pdf|docx?|xlsx?|pp[st]x?|psd|odt|key|mp[2-5g]|m4[av]|og[gv]|wav|mov|wm[av]|avi|3g[p2])$':
+              allow: true
+              expires: 1w
+            # Explicitly deny executable/script files
+            '\.(?i:php|phtml|php3|php4|php5|php7|php8|phar|pl|cgi|asp|aspx|jsp|cfm|shtml|shtm|htaccess|sh|bash|exe|dll)$':
+              allow: false
+            # Deny hidden files
+            '/\.':
+              allow: false
+        "/app/civicrm-ext":
+            root: "web/app/civicrm-ext"
+            allow: false  # Change to false and control via rules
+            scripts: false
+            expires: 15m
+            passthru: false
+            rules:
+                # Allow static assets including HTML
+                '\.(jpe?g|gif|png|svg|bmp|ico|css|js|json|html|htm|eot|ttf|woff|woff2|pdf|docx?|xlsx?|pp[st]x?|psd|odt|key|mp[2-5g]|m4[av]|og[gv]|wav|mov|wm[av]|avi|3g[p2])$':
+                    allow: true
+                    expires: 1w
+                # Block PHP execution
+                '\.(?i:php|phtml|php3|php4|php5|php7|php8|phar|pl|cgi|asp|aspx|jsp|cfm|shtml|shtm|htaccess|sh|bash|exe|dll)$':
+                    allow: false
+                # Block hidden files
+                '/\.':
+                    allow: false
+        "/wp-content/plugins/civicrm/civicrm/packages/kcfinder":
+            root: "web/app/plugins/civicrm/civicrm/packages/kcfinder"
+            allow: true
+            scripts: true
+            expires: 15m
+            passthru: true
+    crons:
+      # Run WordPress cron tasks every 20 minutes.
+      wp:
+        spec: '*/30 * * * *'
+        commands:
+          start: |
+            wp cron event run --due-now
+      civi-cron:
+        spec: '*/30 * * * *'
+        commands:
+          start: |
+            wp --user=cronuser civicrm api job.execute auth=0
+
+    source:
+      operations:
+        auto-update:
+          command: |
+            curl -fsS https://raw.githubusercontent.com/platformsh/source-operations/main/setup.sh | { bash /dev/fd/3 sop-autoupdate; } 3<&0
+routes:
+  "https://{default}/":
+      type: upstream
+      upstream: "wordpress:http"
+      cache:
+        enabled: true
+        default_ttl: 300
+        cookies:
+          - '/^wordpress_logged_in_/'
+          - '/^wordpress_sec_/'
+          - 'wordpress_test_cookie'
+          - '/^wp-settings-/'
+          - '/^wp-postpass/'
+          - '/^wp-resetpass-/'
+          - '/^PHPSESSID$/'  # Allow PHPSESSID cookie
+          - '/^simple_wp_membership_sec_/'
+services:
+  db:
+    type: mariadb:11.8
+    configuration:
+      properties:
+        max_allowed_packet: 64
+        max_heap_table_size: 32      
+        table_definition_cache: 2000
+        table_open_cache: 2000      
+        default_charset: utf8mb4
+        default_collation: utf8mb4_unicode_ci
+        innodb_adaptive_hash_index: 0      
+        optimizer_use_condition_selectivity: 4
+      schemas:
+        - main
+        - civicrm
+      endpoints:
+        mysql:
+          default_schema: main
+          privileges:
+            main: admin
+            civicrm: admin
+        civicrm:
+          default_schema: civicrm
+          privileges:
+            main: admin
+            civicrm: admin
+
