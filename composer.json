@@ -103,6 +103,9 @@
       },
       "civicrm/civicrm-wordpress": {
         "Composer and PaaS support": "https://patch-diff.githubusercontent.com/raw/civicrm/civicrm-wordpress/pull/362.patch"
+      },
+      "civicrm/civicrm-extension-plugin": {
+        "WP location of settings file in config file": "./patches/civi-wp-composer-config.patch"
       }
     },
     "civicrm-asset": {

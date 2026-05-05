@@ -1,0 +1,15 @@
+diff --git a/src/civicrm.config.php b/src/civicrm.config.php
+index b8ba0c9..205814a 100644
+--- a/src/civicrm.config.php
++++ b/src/civicrm.config.php
+@@ -120,8 +120,8 @@ function civicrm_conf_init() {
+     }
+   }
+ 
+-  // FIXME: problem spot for Drupal 5.1 config dir layout.
+-  $conf = "$confdir/default";
++  // Wordpress CiviCRM Plugin Path.
++  $conf = dirname(__FILE__, 2);
+   return $conf;
+ }
+ 
