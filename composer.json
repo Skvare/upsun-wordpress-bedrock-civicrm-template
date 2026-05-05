@@ -102,8 +102,7 @@
         "WIP composer support": "https://patch-diff.githubusercontent.com/raw/civicrm/civicrm-core/pull/32945.patch"
       },
       "civicrm/civicrm-wordpress": {
-        "WIP composer support": "https://patch-diff.githubusercontent.com/raw/civicrm/civicrm-wordpress/pull/348.patch",
-        "composer install scan": "https://patch-diff.githubusercontent.com/raw/civicrm/civicrm-wordpress/pull/361.patch"
+        "Composer and PaaS support": "https://patch-diff.githubusercontent.com/raw/civicrm/civicrm-wordpress/pull/362.patch"
       }
     },
     "civicrm-asset": {
@@ -131,10 +130,12 @@
     "lint": "pint --test",
     "lint:fix": "pint",
     "post-install-cmd": [
-      "cp web/app/plugins/civicrm/wordpress-bedrock-civicrm-settings/civicrm.settings.php web/app/plugins/civicrm/"
+      "cp web/app/plugins/civicrm/wordpress-bedrock-civicrm-settings/civicrm.settings.php web/app/plugins/civicrm/",
+      "composer civicrm:publish"
     ],
     "post-update-cmd": [
-      "cp web/app/plugins/civicrm/wordpress-bedrock-civicrm-settings/civicrm.settings.php web/app/plugins/civicrm/"
+      "cp web/app/plugins/civicrm/wordpress-bedrock-civicrm-settings/civicrm.settings.php web/app/plugins/civicrm/",
+      "composer civicrm:publish"
     ]
   }
 }
