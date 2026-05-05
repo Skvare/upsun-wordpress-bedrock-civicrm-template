@@ -159,6 +159,57 @@ applications:
                 # Block hidden files
                 '/\.':
                     allow: false
+        "/app/uploads/civicrm/persist":
+          root: "web/app/uploads/civicrm/persist"
+          allow: false  # Change to false and control via rules
+          scripts: false
+          expires: 15m
+          passthru: false
+          rules:
+            # Allow static assets including HTML
+            '\.(jpe?g|gif|png|svg|bmp|ico|css|js|json|html|htm|eot|ttf|woff|woff2|pdf|docx?|xlsx?|pp[st]x?|psd|odt|key|mp[2-5g]|m4[av]|og[gv]|wav|mov|wm[av]|avi|3g[p2])$':
+              allow: true
+              expires: 1w
+            # Block PHP execution
+            '\.(?i:php|phtml|php3|php4|php5|php7|php8|phar|pl|cgi|asp|aspx|jsp|cfm|shtml|shtm|htaccess|sh|bash|exe|dll)$':
+              allow: false
+            # Block hidden files
+            '/\.':
+              allow: false
+        "/app/uploads/civicrm/custom":
+          root: "web/app/uploads/civicrm/custom"
+          allow: false  # Change to false and control via rules
+          scripts: false
+          expires: 15m
+          passthru: false
+          rules:
+            # Allow static assets including HTML
+            '\.(jpe?g|gif|png|svg|bmp|ico|css|js|json|html|htm|eot|ttf|woff|woff2|pdf|docx?|xlsx?|pp[st]x?|psd|odt|key|mp[2-5g]|m4[av]|og[gv]|wav|mov|wm[av]|avi|3g[p2])$':
+              allow: true
+              expires: 1w
+            # Block PHP execution
+            '\.(?i:php|phtml|php3|php4|php5|php7|php8|phar|pl|cgi|asp|aspx|jsp|cfm|shtml|shtm|htaccess|sh|bash|exe|dll)$':
+              allow: false
+            # Block hidden files
+            '/\.':
+              allow: false
+        "/app/uploads/civicrm/upload":
+          root: "web/app/uploads/civicrm/upload"
+          allow: false  # Change to false and control via rules
+          scripts: false
+          expires: 15m
+          passthru: false
+          rules:
+            # Allow static assets including HTML
+            '\.(jpe?g|gif|png|svg|bmp|ico|css|js|json|html|htm|eot|ttf|woff|woff2|pdf|docx?|xlsx?|pp[st]x?|psd|odt|key|mp[2-5g]|m4[av]|og[gv]|wav|mov|wm[av]|avi|3g[p2])$':
+              allow: true
+              expires: 1w
+            # Block PHP execution
+            '\.(?i:php|phtml|php3|php4|php5|php7|php8|phar|pl|cgi|asp|aspx|jsp|cfm|shtml|shtm|htaccess|sh|bash|exe|dll)$':
+              allow: false
+            # Block hidden files
+            '/\.':
+              allow: false
         "/app/plugins/civicrm/civicrm":
           root: "web/app/plugins/civicrm/civicrm"
           scripts: false
