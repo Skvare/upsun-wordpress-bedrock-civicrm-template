@@ -1,5 +1,7 @@
 # Wordpress Bedrock CiviCRM Upsun Template
 
+Detailed instructions: https://github.com/jackrabbithanna/wordpress-bedrock-civicrm-upsun-blog/blob/main/civicrm-wordpress-bedrock-on-upsun.md
+
 ## Local Development
 
 Clone this repo
