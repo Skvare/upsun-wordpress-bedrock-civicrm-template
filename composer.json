@@ -110,7 +110,10 @@
     },
     "civicrm-asset": {
       "path": "web/app/plugins/civicrm/civicrm",
-      "url": "/app/plugins/civicrm/civicrm"
+      "url": "/app/plugins/civicrm/civicrm",
+        "assets:packages": {
+            "+include": ["kcfinder/**.php"]
+        }
     },
     "civicrm": {
       "cms_type": "wordpress",
